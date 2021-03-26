@@ -55,8 +55,16 @@ export class DbService {
     });
   }
 
-
+  // GET LIST
   getSongs(){
+    return this._storage.executeSql( 'SELECT * FROM songtable', [] )
+      .then( res => {
+        let items: Song[] = [];
+
+        console.log(res);
+        
+
+      })
 
     
   }
