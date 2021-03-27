@@ -61,28 +61,52 @@ export class DbService {
       .then( res => {
         let items: Song[] = [];
 
-        console.log(res);
-        
-
-      })
-
-    
+        if(res.rows.length > 0){
+          for(var i=0; i < res.rows.length; i++){
+            items.push({
+              id: res.rows.item(i).id,
+              artist_name: res.rows.item(i).artist_name,
+              song_name: res.rows.item(i).song_name 
+            });
+          }
+        }
+        this.songsList.next(items);
+      });
   }
 
-  addSong(){
+  addSong(artist_name, song_name){
+    let data = [artist_name, song_name];
 
+    return this._storage.executeSql( 'INSET INTO songtable (artist_name, song_name VALUES (?, ?)', data)
+      .then( res => {
+        this.getSongs();
+      });
   }
 
-  getSong(id){
-
+  getSong(id): Promise<Song>{
+    return this._storage.executeSql( 'SELECT * FROM songtable WHERE id = ?', id)
+      .then( res => {
+        return {
+          id: res.rows.item(0).id,
+          artist_name: res.rows.item(0).artist_name,
+          song_name: res.rows.item(0).song_name 
+        }
+      });
   }
 
   updateSong(id, song: Song){
-
+    let data = [song.artist_name, song.song_name];
+    return this._storage.executeSql( `UPDATE songtable SET artist_name = ?, song_name = ?, WHERE id = ${id}`, data)
+      .then( data => {
+        this.getSongs();
+      });
   }
 
   deleteSong(id){
-
+    return this._storage.executeSql( 'DELETE FROM songtable WHERE id = ?', [id])
+      .then( res => {
+        this.getSongs();
+      });
   }
 
 
