@@ -19,6 +19,8 @@ export class SongPage implements OnInit {
     private actRoute: ActivatedRoute
   ) {
     this.id = this.actRoute.snapshot.paramMap.get('id');
+    console.log("id: ", this.id);
+    
 
     this.db.getSong(this.id).then(res => {
       this.editForm.setValue({

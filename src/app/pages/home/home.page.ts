@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormsModule } from '@angular/forms';
 import { DbService } from '../../services/db.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Song } from '../../models/song';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
 
   mainForm: FormGroup;
-  Data: any[] = [];
+  songs: Song[] = [];
   
   
   constructor( 
@@ -22,13 +23,14 @@ export class HomePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dbSrv.dbState()
-      .subscribe( (res) => {
-        if(res){
-          this.dbSrv.fetchSongs()
-            .subscribe( item => {
-              this.Data = item;
-            })
+    this.dbSrv.getDbState()
+      .subscribe( (ready) => {
+        console.log("readyDB: ", ready);
+        
+        if(ready){
+          this.dbSrv.getSongs().subscribe( data => {
+              this.songs = data;
+            });
         }
       });
 
@@ -47,10 +49,11 @@ export class HomePage implements OnInit {
   }
 
   deleteSong(id){
-    this.db.deleteSong(id).then(async(res) => {
-      let toast = await this.toast.create({
+    this.dbSrv.deleteSong(id).then( async(res) => {
+      let toast = await this.toastCtrl.create({
         message: 'Song deleted',
-        duration: 2500
+        duration: 1500,
+        position: 'top'
       });
       toast.present();      
     })

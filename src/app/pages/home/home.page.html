@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Ionic 5 SQLite CRUD Example</ion-title>
+    <ion-title>Ionic SQLite CRUD Example</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -33,15 +33,15 @@
         Songs
       </ion-list-header>
 
-      <ion-item lines="inset" *ngFor="let item of Data">
+      <ion-item lines="inset" *ngFor="let song of songs">
         <ion-label>
-          <h5>{{item.artist_name}}</h5>
-          <p>{{item.song_name}}</p>
+          <h5>{{song.artist_name}}</h5>
+          <p>{{song.song_name}}</p>
         </ion-label>
 
         <div class="item-note" item-end>
-          <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', item.id]"></ion-icon>        
-          <ion-icon name="trash" style="zoom:2.0" (click)="deleteSong(item.id)"></ion-icon>
+          <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', song.id]"></ion-icon>        
+          <ion-icon name="trash" style="zoom:2.0" (click)="deleteSong(song.id)"></ion-icon>
         </div>
       </ion-item>
   </ion-list>

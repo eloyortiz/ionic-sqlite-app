@@ -9,8 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 //PLUGINS
 import { SQLite } from '@ionic-native/sqlite/ngx';
-import { HttpClientModule } from '@angular/common/http';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
