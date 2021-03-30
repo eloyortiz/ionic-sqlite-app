@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../../services/database.service';
-import { Developer } from '../../interfaces/interfaces';
+import { DatabaseService, Developer } from '../../services/database.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,48 +10,47 @@ import { Observable } from 'rxjs';
 export class DevelopersPage implements OnInit {
 
   public developers: Developer[] = [];
-  public products2: Observable<any[]>;
-  public products: any[] = [];
+  public products$: Observable<any[]>;
   public developer = {};
   public product = {};
+  public selectedView = 'devs';
   public cargando:boolean = true;
-
-  selectedView = 'devs';
 
   constructor( private dbSrv: DatabaseService) { }
 
   ngOnInit() {
-    this.dbSrv.getDatabaseState().subscribe( rdy => {
+    this.dbSrv.getDatabaseState$().subscribe( dbReady => {
       this.cargando = true;
-      if( rdy ){
-        this.dbSrv.getDevs().subscribe( devs => {
+      if( dbReady ){
+        this.dbSrv.getDevs$().subscribe( devs => {
           this.developers = devs;
-          this.cargando = false;
         })
-        this.dbSrv.getProducts().subscribe(prods => {
-          console.log(prods);
-          
-          this.products = prods;
-        });
+        this.products$ = this.dbSrv.getProducts$();
+        this.cargando = false;
       }
     });
   }
 
   addDeveloper(){
-    let skills = this.developer['skills'].split(',');
-    skills = skills.map( skill => skill.trim() );
+    let skills = this.developer['skills'].toString().split(",").map( skill => skill.trim() );
+    console.log('skills :>> ', skills);
+    //skills = skills.map( skill => skill.trim() );
 
     this.dbSrv.addDeveloper( this.developer['name'], skills, this.developer['img'])
       .then(_ => {
+        console.log('addDeveloper _ :>> ', _);
         this.developer = {};
       });
   }
 
   addProduct(){
+    console.log('this.product :>> ', this.product);
     this.dbSrv.addProduct(this.product['name'], this.product['creator'])
       .then( _ => {
         this.product={};
-      });
+      })
+      .then(_=> console.log('Product added'))
+      .catch( err => console.log(err) );
   }
 
 }

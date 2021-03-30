@@ -1,8 +1,7 @@
-import { DatabaseService } from './../../services/database.service';
+import { DatabaseService, Developer } from './../../services/database.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Developer } from '../../interfaces/interfaces';
  
 @Component({
   selector: 'app-developer',
@@ -10,39 +9,48 @@ import { Developer } from '../../interfaces/interfaces';
   styleUrls: ['./developer.page.scss'],
 })
 export class DeveloperPage implements OnInit {
-  developer: Developer = null;
-  skills = '';
+
+  public developer: Developer = null;
+  public skills = '';
  
-  constructor(private route: ActivatedRoute, private db: DatabaseService, private router: Router, private toast: ToastController) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private db: DatabaseService, 
+    private router: Router, 
+    private toast: ToastController) { }
  
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       let devId = params.get('id');
  
-      this.db.getDeveloper(devId).then(data => {
-        this.developer = data;
-        this.skills = this.developer.skills.join(',');
-      });
+      this.db.getDeveloper(devId)
+        .then(data => {
+          this.developer = data;
+          this.skills = this.developer.skills.join(',');
+        });
     });
   }
  
   delete() {
-    this.db.deleteDeveloper(this.developer.id).then(() => {
-      this.router.navigateByUrl('/');
+    this.db.deleteDeveloper(this.developer.id)
+      .then(_ => {
+        this.router.navigateByUrl('/');
     });
   }
  
   updateDeveloper() {
-    let skills = this.skills.split(',');
-    skills = skills.map(skill => skill.trim());
-    this.developer.skills = skills;
+    this.developer.skills = this.skills.split(',').map( skill => skill.trim() );
  
-    this.db.updateDeveloper(this.developer).then(async (res) => {
-      let toast = await this.toast.create({
-        message: 'Developer updated',
-        duration: 3000
+    this.db.updateDeveloper(this.developer)
+      .then(async (res) => {
+        let toast = await this.toast.create({
+          message: 'Developer updated',
+          duration: 1500,
+          position: 'top'
+        });
+        toast.present();
       });
-      toast.present();
-    });
+    
+    this.router.navigateByUrl('/');
   }
 }

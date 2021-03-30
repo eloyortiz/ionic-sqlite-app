@@ -17,11 +17,11 @@
   <div [ngSwitch]="selectedView">
     <div *ngSwitchCase="'devs'">
       <ion-item>
-        <ion-label position="stacked">What\'s your name?</ion-label>
+        <ion-label position="stacked">What's your name?</ion-label>
         <ion-input [(ngModel)]="developer.name" placeholder="Developer name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">What are your special skills?</ion-label>
+        <ion-label position="stacked">What are your special skills (comma separated)?</ion-label>
         <ion-input [(ngModel)]="developer.skills" placeholder="Special skills"></ion-input>
       </ion-item>
       <ion-item>
@@ -32,15 +32,7 @@
         Add Developer
       </ion-button>
 
-      <div *ngIf="cargando">
-        <div class="alert alert-info text-center">
-          <h4 class="alert-heading">Cargando</h4>
-          <i class="fa fa-spin fa-refresh fa-2x"></i>
-          <p class="mb-0">Por favor, espere...</p>
-        </div>
-      </div>
-      
-      <ion-list *ngIf="!cargando">
+      <ion-list >
         <ion-item button *ngFor="let dev of developers" [routerLink]="['/', 'developers', dev.id]">
           <ion-avatar slot="start">
             <img [src]="dev.img" />
@@ -53,7 +45,8 @@
       </ion-list>
     </div>
     
-    
+
+
     <div *ngSwitchCase="'products'">
       <ion-item>
         <ion-label position="stacked">Product name</ion-label>
@@ -61,21 +54,32 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Creator?</ion-label>
-        <ion-select [(ngModel)]="product.creator">
+        <ion-select [(ngModel)]="product.id">
           <ion-select-option *ngFor="let dev of developers" [value]="dev.id">{{ dev.name }}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-button (click)="addProduct()" expand="block" shape="round">Add Product</ion-button>
+      <ion-button (click)="addProduct()" color="danger" expand="block" shape="round">
+        Add Product
+      </ion-button>
  
-      <ion-list>
-        <ion-list-header >No Products</ion-list-header>
-        <ion-item *ngFor="let prod of products">
+
+      <div *ngIf="cargando">
+        <div class="alert alert-info text-center">
+          <h4 class="alert-heading">Cargando</h4>
+          <i class="fa fa-spin fa-refresh fa-2x"></i>
+          <p class="mb-0">Por favor, espere...</p>
+        </div>
+      </div>
+
+      <ion-list *ngIf="!cargando">
+        <ion-item *ngFor="let prod of products$ | async">
           <ion-label>
             <h2>{{ prod.name }}</h2>
-            <p>Created by: {{ prod.creator }}</p>
+            <p>Created by: {{ prod.id }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
+
     </div>
   </div>
  
