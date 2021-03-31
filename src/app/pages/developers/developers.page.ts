@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService, Developer } from '../../services/database.service';
 import { Observable } from 'rxjs';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-developers',
@@ -16,7 +17,10 @@ export class DevelopersPage implements OnInit {
   public selectedView = 'devs';
   public cargando:boolean = true;
 
-  constructor( private dbSrv: DatabaseService) { }
+  constructor( 
+    private dbSrv: DatabaseService,
+    private toast: ToastController
+    ) { }
 
   ngOnInit() {
     this.dbSrv.getDatabaseState$().subscribe( dbReady => {
@@ -37,20 +41,40 @@ export class DevelopersPage implements OnInit {
     //skills = skills.map( skill => skill.trim() );
 
     this.dbSrv.addDeveloper( this.developer['name'], skills, this.developer['img'])
-      .then(_ => {
-        console.log('addDeveloper _ :>> ', _);
+      .then(async _ => {
+        let toast = await this.toast.create({
+          message: 'Developer added',
+          duration: 1500,
+          position: 'top'
+        });
+        toast.present();
         this.developer = {};
       });
   }
 
-  addProduct(){
-    console.log('this.product :>> ', this.product);
-    this.dbSrv.addProduct(this.product['name'], this.product['creator'])
-      .then( _ => {
-        this.product={};
+  async addProduct(){
+    if( this.product['name'] !== undefined && this.product['creatorId'] !== undefined ){
+      this.dbSrv.addProduct(this.product['name'], this.product['creatorId'])
+      .then( async _ => {
+        let toast = await this.toast.create({
+          message: 'Product added',
+          duration: 1500,
+          position: 'top'
+        });
+        toast.present();
+        this.product = {};
       })
-      .then(_=> console.log('Product added'))
       .catch( err => console.log(err) );
+    }
+    else{
+      let toast = await this.toast.create({
+        message: 'Data incompleted',
+        duration: 1500,
+        position: 'top'
+      });
+      toast.present();
+    }
+   
   }
 
 }

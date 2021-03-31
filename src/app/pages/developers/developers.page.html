@@ -54,7 +54,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Creator?</ion-label>
-        <ion-select [(ngModel)]="product.id">
+        <ion-select [(ngModel)]="product.creatorId">
           <ion-select-option *ngFor="let dev of developers" [value]="dev.id">{{ dev.name }}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -71,11 +71,11 @@
         </div>
       </div>
 
-      <ion-list *ngIf="!cargando">
-        <ion-item *ngFor="let prod of products$ | async">
+      <ion-list *ngIf="products$ | async as productList">
+        <ion-item *ngFor="let prod of productList">
           <ion-label>
             <h2>{{ prod.name }}</h2>
-            <p>Created by: {{ prod.id }}</p>
+            <p>Created by {{ prod.creator }}</p>
           </ion-label>
         </ion-item>
       </ion-list>

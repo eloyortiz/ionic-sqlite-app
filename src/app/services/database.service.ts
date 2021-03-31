@@ -163,8 +163,9 @@ export class DatabaseService {
       });
   }
 
-  addProduct(name, creator){
-    let data = [name, creator];
+  addProduct(name:string, creatorId:number){
+    let data = [name, creatorId];
+    console.log('data product', data);
     return this.database.executeSql('INSERT INTO products (name, creatorId) VALUES (?, ?)', data)
       .then( _ => {
         return this.loadProducts();
