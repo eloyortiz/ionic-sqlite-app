@@ -49,7 +49,7 @@ export class DbService {
 
   //Render fake data
   getFakeData(){
-    this.http.get('assets/seed,sql', {responseType: 'text'})
+    this.http.get('assets/seed.sql', {responseType: 'text'})
       .subscribe(data => {
         this.sqlPorter.importSqlToDb(this.storage, data)
           .then( () => {

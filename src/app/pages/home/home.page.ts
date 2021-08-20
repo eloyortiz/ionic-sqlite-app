@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { DbService } from './../../services/db.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from "@angular/router";
+import { DbService } from './../../services/db.service';
+import { Song } from '../../services/song';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { Router } from "@angular/router";
 
 export class HomePage implements OnInit {
   mainForm: FormGroup;
-  Data: any[] = []
+  Songs: Song[] = []
 
   constructor(
     private db: DbService,
@@ -26,7 +27,7 @@ export class HomePage implements OnInit {
     this.db.dbState().subscribe((res) => {
       if(res){
         this.db.fetchSongs().subscribe(item => {
-          this.Data = item
+          this.Songs = item
         })
       }
     });
@@ -39,7 +40,7 @@ export class HomePage implements OnInit {
 
   storeData() {
     this.db.addSong(
-      this.mainForm.value.artist,
+      this.mainForm.controls.artist.value, // .value.artist,
       this.mainForm.value.song
     ).then((res) => {
       this.mainForm.reset();

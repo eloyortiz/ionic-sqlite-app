@@ -34,15 +34,17 @@
       Songs
     </ion-list-header>
 
-    <ion-item lines="inset" *ngFor="let data of Data">
+    <ion-item lines="inset" *ngFor="let item of Songs">
       <ion-label>
-        <h5>{{data.artist_name}}</h5>
-        <p>{{data.song_name}}</p>
+        <h5>{{item.artist_name | json}}</h5>
+        <h6>{{item.artist_name}}</h6>
+        <h6>{{item.id}}</h6>
+        <p>{{item.song_name}}</p>
       </ion-label>
 
       <div class="item-note" item-end>
-        <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', data.id]"></ion-icon>        
-        <ion-icon name="trash" style="zoom:2.0" (click)="deleteSong(data.id)"></ion-icon>
+        <ion-icon name="create" style="zoom:2.0" [routerLink]="['/song/', item.id]"></ion-icon>        
+        <ion-icon name="trash" style="zoom:2.0" (click)="deleteSong(item.id)"></ion-icon>
       </div>
     </ion-item>
   </ion-list>
