@@ -63,8 +63,8 @@
     "uk.co.workingedge.cordova.plugin.sqliteporter": "^1.1.1"
   },
   "overrides": {
-   "xml2js": "^0.5.0"
- },
+    "xml2js": "^0.5.0"
+  },
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
