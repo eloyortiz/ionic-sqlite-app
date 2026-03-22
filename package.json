@@ -34,7 +34,7 @@
     "@angular/language-service": "~19.2.19",
     "@ionic/angular-toolkit": "^12.2.0",
     "@types/jasmine": "~5.1.0",
-    "@types/node": "^18.0.0",
+    "@types/node": "^25.5.0",
     "cordova-android": "^9.0.0",
     "cordova-browser": "^7.0.0",
     "cordova-plugin-device": "^2.0.2",
