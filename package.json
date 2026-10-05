@@ -33,7 +33,7 @@
     "@angular/compiler-cli": "~22.2.1",
     "@angular/language-service": "~22.2.0",
     "@ionic/angular-toolkit": "^13.0.0",
-    "@types/jasmine": "~6.0.0",
+    "@types/jasmine": "~7.0.0",
     "@types/node": "^26.6.3",
     "cordova-android": "^15.1.0",
     "cordova-browser": "^7.0.0",
